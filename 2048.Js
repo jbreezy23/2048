@@ -1,16 +1,17 @@
 let grid;
 
+//Create the 4x4 grid in the browser. 
 function setup(){
 	createCanvas(400,400);
 	grid=[[0,0,0,0],
 		  [0,0,0,0],
 		  [0,0,0,0],
 		  [0,0,0,0]];
-		  console.table(grid);
+//Add two numbers (2 or 4) randomly to the grid
 		  addNumber();
 		  addNumber();
-		  console.table(grid);
 }
+
 
 function addNumber(){
 let options= [];
@@ -42,19 +43,41 @@ function draw()
 function keyPressed(){
 	if (key== ' '){
 		for (let i=0; i<4; i++){
-			grid[i]=slide(grid[i]);
+			row=operate(i);
+			
 		}
 		addNumber();
 	}
+}
+
+function operate(row){
+	row=slide(row);
+	row=combine(row);
+	row=slide(row);
+	return row;
 }
 
 function slide(row){
 	let arr=row.filter(val => val);
 	let missing = 4-arr.length;
 	let zeros=Array(missing).fill(0);
-	arr= arr.concat(zeros);
+	arr= zeros.concat(arr);
 	return arr;
 }
+
+function combine(row){
+	for (let i=3;i>=1;i--){
+		let a = row[i];
+		let b = row[i-1];
+		if (a==b){
+			row[i]=a+b;
+			row[i-1]=0;
+			break;
+		}
+	}
+	return row;
+}
+
 
 function drawGrid()
 {
